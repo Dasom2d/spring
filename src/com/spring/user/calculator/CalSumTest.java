@@ -1,4 +1,4 @@
-package com.spring.user.dao.calculator;
+package com.spring.user.calculator;
 
 import org.junit.Test;
 import static org.hamcrest.core.Is.is;

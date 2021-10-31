@@ -8,11 +8,10 @@ import static org.junit.Assert.*;
 
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.support.GenericXmlApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -21,11 +20,11 @@ import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/com/spring/applicationContext.xml")
-public class UserDaoTest {
+public class UserDaoJdbcTest {
     @Autowired
     private ApplicationContext context;
 
-    private UserDao dao;
+    private UserDaoJdbc dao;
     private User user1;
     private User user2;
     private User user3;
@@ -33,7 +32,7 @@ public class UserDaoTest {
     @Before
     public void setUp() {
 //        ApplicationContext context = new GenericXmlApplicationContext("com/spring/applicationContext.xml");
-        this.dao = context.getBean("userDao", UserDao.class);
+        this.dao = context.getBean("userDao", UserDaoJdbc.class);
 
         user1 = new User("somi", "다솜", "dasom");
         user2 = new User("click", "민우", "minwoo");
@@ -104,6 +103,13 @@ public class UserDaoTest {
         assertThat(user1.getId(),is(user2.getId()));
         assertThat(user1.getName(), is(user2.getName()));
         assertThat(user1.getPassword(), is(user2.getPassword()));
+    }
+
+    @Test(expected = DataAccessException.class)
+    public void duplicateKey() {
+        dao.deleteAll();
+        dao.add(user1);
+        dao.add(user1);
     }
 
 //    public static void main(String[] args) throws SQLException, ClassNotFoundException {
