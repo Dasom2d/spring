@@ -16,5 +16,4 @@
     <bean id="jdbcContext" class="com.spring.user.dao.JdbcContext">
         <property name="dataSource" ref="dataSource" />
     </bean>
-
 </beans>
