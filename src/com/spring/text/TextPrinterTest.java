@@ -8,3 +8,4 @@ public class TextPrinterTest {
         textPrinter.print("TEAR");
     }
 }
+;
